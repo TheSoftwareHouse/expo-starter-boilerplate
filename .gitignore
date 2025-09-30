@@ -41,3 +41,6 @@ app-example
 # generated native folders
 /ios
 /android
+
+# i18n
+.credentials.json
