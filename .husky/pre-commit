@@ -1,0 +1,2 @@
+npx validate-branch-name
+npx lint-staged
