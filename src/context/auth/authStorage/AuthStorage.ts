@@ -1,4 +1,5 @@
 import { MMKV } from 'react-native-mmkv';
+
 import { Storage } from './AuthStorage.types';
 
 const ACCESS_TOKEN_KEY = 'accessToken';
@@ -98,6 +99,7 @@ const storage: Storage = {
 
   onError: (error: unknown) => {
     // TODO: Handle errors (e.g. log them)
+    // eslint-disable-next-line no-console
     console.error('AuthStorage error:', error);
   },
 };

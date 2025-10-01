@@ -51,6 +51,7 @@ const initLogger = () => {
   const sentryDsn = Constants.expoConfig?.extra?.sentryDsn || process.env.EXPO_PUBLIC_SENTRY_DSN;
 
   if (!sentryDsn) {
+    // eslint-disable-next-line no-console
     console.warn('Sentry DSN not found. Logger will work in development mode only.');
     return;
   }
@@ -79,6 +80,7 @@ const initLogger = () => {
 const sendLog = (level: LogLevel, message: string | Error) => {
   if (__DEV__) {
     // In development, also log to console for easier debugging
+    // eslint-disable-next-line no-console
     console[level === 'warning' ? 'warn' : level](message);
   }
 

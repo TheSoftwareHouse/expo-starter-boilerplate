@@ -1,8 +1,8 @@
 import { useInfiniteQuery as useRQInfiniteQuery } from '@tanstack/react-query';
 
 import { StandardizedApiError } from '@/context/apiClient/apiClientContextController/apiError/apiError.types';
-
 import { useApiClient } from '../useApiClient/useApiClient';
+
 import { UseInfiniteQueryOptions } from './useInfiniteQuery.types';
 
 /**

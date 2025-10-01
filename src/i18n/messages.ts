@@ -1,16 +1,20 @@
+import { PrimitiveType } from 'react-intl';
+
 import { AppLocale } from '@/context/locale/AppLocale.enum';
 
-import { PrimitiveType } from 'react-intl';
 import enMessages from './data/en.json';
 import plMessages from './data/pl.json';
 
 type KeyAsValue<T> = { [P in keyof T]: P };
 
 const keysToValues = <T extends Record<string, string | unknown>>(source: T): KeyAsValue<typeof source> =>
-  (Object.keys(source) as (keyof T)[]).reduce((accumulated, current) => {
-    accumulated[current] = current;
-    return accumulated;
-  }, {} as KeyAsValue<typeof source>);
+  (Object.keys(source) as (keyof T)[]).reduce(
+    (accumulated, current) => {
+      accumulated[current] = current;
+      return accumulated;
+    },
+    {} as KeyAsValue<typeof source>,
+  );
 
 export const AppMessages = {
   ...keysToValues(enMessages),

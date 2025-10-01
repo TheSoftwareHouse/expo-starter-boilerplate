@@ -1,7 +1,7 @@
-import { act, fireEvent, render, screen } from '@/tests';
 import { useContext } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
+import { fireEvent, render, screen } from '@/tests';
 import { AppLocale } from '../AppLocale.enum';
 import { defaultLocale } from '../defaultLocale';
 import { LocaleContext } from '../localeContext/LocaleContext';
@@ -64,9 +64,7 @@ describe('LocaleContextController', () => {
     );
 
     // Change locale
-    act(() => {
-      fireEvent.press(screen.getByTestId('set-locale-button'));
-    });
+    fireEvent.press(screen.getByTestId('set-locale-button'));
 
     // Should now show Polish locale
     expect(screen.getByTestId('context-data')).toHaveTextContent(
@@ -102,15 +100,11 @@ describe('LocaleContextController', () => {
     expect(screen.getByTestId('current-locale')).toHaveTextContent(defaultLocale);
 
     // Switch to Polish
-    act(() => {
-      fireEvent.press(screen.getByTestId('set-polish'));
-    });
+    fireEvent.press(screen.getByTestId('set-polish'));
     expect(screen.getByTestId('current-locale')).toHaveTextContent(AppLocale.pl);
 
     // Switch back to English
-    act(() => {
-      fireEvent.press(screen.getByTestId('set-english'));
-    });
+    fireEvent.press(screen.getByTestId('set-english'));
     expect(screen.getByTestId('current-locale')).toHaveTextContent(AppLocale.en);
   });
 

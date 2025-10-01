@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
+import { Loader } from '@/components/ui/loader';
 import { useAuth } from '@/hooks';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { logger } from '@/integrations/logger';
@@ -24,7 +25,7 @@ function AppLayout() {
 
   // Show loading state while checking authentication
   if (isAuthenticating) {
-    return null; // You could show a loading screen here
+    return <Loader />;
   }
 
   return (

@@ -1,5 +1,6 @@
-import { render, screen } from '@/tests';
 import { Text } from 'react-native';
+
+import { render, screen } from '@/tests';
 
 import { AuthContext } from './AuthContext';
 

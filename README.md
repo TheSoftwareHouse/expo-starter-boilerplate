@@ -37,7 +37,7 @@ To create a new project using this boilerplate template:
 4. **Configure environment**: Copy and configure your environment variables:
 
    ```bash
-   cp .env.example .env
+   cp .env.example .env.local
    ```
 
 5. **Initialize translations** (optional): If you plan to use internationalization:
@@ -59,7 +59,7 @@ To create a new project using this boilerplate template:
 2. Start the app
 
    ```bash
-   npx expo start
+   npm start
    ```
 
 In the output, you'll find options to open the app in a
@@ -129,7 +129,7 @@ To check if your development environment is properly configured, you can use the
 
    ```bash
    # Start the development server
-   npx expo start
+   npm start
 
    # Test on iOS simulator (press 'i' in terminal or scan QR code)
    # Test on Android emulator (press 'a' in terminal or scan QR code)
