@@ -10,10 +10,8 @@ export const useQuery = <TQueryFnData = unknown, TError = StandardizedApiError>(
   const { client } = useApiClient();
   const { queryFn, ...options } = params;
 
-  const result = useRQQuery({
+  return useRQQuery({
     queryFn: (args) => queryFn(client)(args),
     ...options,
   });
-
-  return { ...result, isLoadingAndEnabled: result.isPending && result.fetchStatus !== 'idle' };
 };

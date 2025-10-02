@@ -1,8 +1,8 @@
 import { Image } from 'expo-image';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
 import { AppLocale } from '@/context/locale/AppLocale.enum';
 import { useAuth, useLocale } from '@/hooks';
 

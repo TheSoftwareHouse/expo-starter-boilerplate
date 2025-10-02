@@ -1,6 +1,6 @@
 import { render, screen } from '@/tests';
 
-import { Loader } from './loader';
+import { Loader } from './Loader';
 
 describe('Loader', () => {
   it('renders with default props', () => {

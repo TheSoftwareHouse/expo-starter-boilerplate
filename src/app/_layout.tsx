@@ -6,7 +6,7 @@ import 'react-native-reanimated';
 
 import { Loader } from '@/components/ui/loader';
 import { useAuth } from '@/hooks';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useColorScheme } from '@/hooks/useColorScheme';
 import { logger } from '@/integrations/logger';
 import { AppProviders } from '@/providers/AppProviders';
 
