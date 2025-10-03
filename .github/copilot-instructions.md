@@ -9,6 +9,7 @@ This is a carefully crafted Expo starter template featuring:
 
 - **Expo** for fast development and building
 - **TypeScript** for type safety
+- **React Native Unistyles v3** for theming and responsive styling (accessed via custom `useStyles` hook)
 - **Expo Router** for type-safe routing
 - **TanStack Query** with custom abstraction layer
 - **React Intl** for internationalization
@@ -30,6 +31,9 @@ For detailed guidance on specific areas, refer to these specialized instruction 
 
 - **[API Development](instructions/api.instructions.md)** - API patterns, React Query usage, data fetching
 - **[State Management](instructions/state.instructions.md)** - Context patterns, global state management
+- **[Styling with Unistyles](instructions/styling.instructions.md)** - Theming, responsive design, component styling
+- **[Git and Conventional Commits](instructions/git.instructions.md)** - Commit message format, conventional commits,
+  validation
 
 ## Quick Reference
 
@@ -42,7 +46,14 @@ For detailed guidance on specific areas, refer to these specialized instruction 
 - Ensure components are modular, reusable, and maintainable.
 - Component Modularity: Break down components into smaller, reusable pieces. Keep components focused on a single
   responsibility and shouldn't be more than 80 lines of code.
+- Components/folders should have an index.ts file that exports only the elements that should be available outside of the
+  folder (components, types, utilities). This enables clean imports and encapsulation.
 - To install new packages use `npx expo install <package-name>`
+- **Never use hardcoded colors**: Always use theme colors (`theme.colors.*`) instead of hex codes, rgba, or color names
+  like 'white', 'black'
+- **Spacing**: Use `theme.spacing(n)` function where n \* 4px gives the final spacing value
+- **Theme-first approach**: All styling should be theme-aware and support both light and dark modes
+- **Use custom hooks**: Always use the project's custom `useStyles` hook instead of `useUnistyles` directly
 - Structure repository files as follows:
 
 ```
@@ -57,6 +68,7 @@ src/
 ├── utils/        # Utility functions
 ├── types/        # Global type definitions
 └── i18n/         # Internationalization setup
+└── styles/       # Styling utilities and theme definitions
 ```
 
 ## TypeScript Usage
@@ -68,39 +80,25 @@ src/
 - Use absolute imports for all files @/...
 - Avoid try/catch blocks unless there's good reason to translate or handle error in that abstraction
 - Use explicit return types for all functions
+- **Zod imports**: Always use `from 'zod/v4'` instead of `from 'zod'` for schema validation
+- **Constants naming**: Use SCREAMING_SNAKE_CASE for constants (e.g., `BASE_URL`, `REFRESH_TOKEN_URL`)
 
 ### Common Commands
 
 - Run tests: `npm test`
 - Run linter: `npm run lint`
+- Run linter with auto-fix: `npm run lint -- --fix` (use this when checking generated code)
 - Run type checks: `npm run typecheck`
 - Start development server: `npm start`
 
 ## Testing
 
 - Write unit tests using Jest and React Native Testing Library.
+- Always import testing utilities from `@/tests` instead of directly from `@testing-library/react-native` (e.g.,
+  `import { render, screen, fireEvent } from '@/tests';`)
 - Write unit tests for utilities and complex components
 - The test file should be named like the component file but with the .test.tsx extension (e.g., ComponentName.test.tsx)
 - Do not write unit tests for simple components that only show data
-
-## Git Usage
-
-Commit Message Prefixes:
-
-- "fix:" for bug fixes
-- "feat:" for new features
-- "perf:" for performance improvements
-- "docs:" for documentation changes
-- "style:" for formatting changes
-- "refactor:" for code refactoring
-- "test:" for adding missing tests
-- "chore:" for maintenance tasks
-
-Rules:
-
-- Use lowercase for commit messages
-- Keep the summary line concise with a maximum of 100 characters
-- Reference issue numbers when applicable
 
 ## General Guidelines
 

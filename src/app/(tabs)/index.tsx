@@ -1,66 +1,71 @@
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
-import { Platform, Pressable, StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
+import { useStyles, useAuth } from '@/hooks';
 import { HelloWave } from '@/components/HelloWave';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { useAuth } from '@/hooks';
+import { Stack } from '@/components/ui/Stack';
+import { Typography } from '@/components/ui/Typography';
+import { Box } from '@/components/ui/Box';
+import { Button } from '@/components/ui/Button';
 
 export default function HomeScreen() {
   const { user, logout } = useAuth();
+  const { theme } = useStyles();
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: theme.colors.info, dark: theme.colors.surface }}
       headerImage={<Image source={require('@/assets/images/partial-react-logo.png')} style={styles.reactLogo} />}
     >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome{user ? `, ${user.firstName}!` : '!'}</ThemedText>
+      <Stack direction="horizontal" align="center" space="sm">
+        <Typography variant="h1">Welcome{user ? `, ${user.firstName}!` : '!'}</Typography>
         <HelloWave />
-      </ThemedView>
+      </Stack>
 
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">🔐 Authentication Status</ThemedText>
-        <ThemedView style={styles.authContainer}>
-          <ThemedText>
-            <ThemedText type="defaultSemiBold">Status:</ThemedText> Authenticated ✅
-          </ThemedText>
-          {user && (
-            <>
-              <ThemedText>
-                <ThemedText type="defaultSemiBold">User:</ThemedText> {user.firstName} {user.lastName}
-              </ThemedText>
-              <ThemedText>
-                <ThemedText type="defaultSemiBold">Username:</ThemedText> {user.username}
-              </ThemedText>
-            </>
-          )}
-          <Pressable style={styles.logoutButton} onPress={logout}>
-            <ThemedText style={styles.logoutButtonText}>Logout</ThemedText>
-          </Pressable>
-        </ThemedView>
-      </ThemedView>
+      <Stack space="sm">
+        <Typography variant="h2">🔐 Authentication Status</Typography>
+        <Box background="surface" padding="md" borderRadius="md" border="sm">
+          <Stack space="sm">
+            <Typography>
+              <Typography weight="semibold">Status:</Typography> Authenticated ✅
+            </Typography>
+            {user && (
+              <>
+                <Typography>
+                  <Typography weight="semibold">User:</Typography> {user.firstName} {user.lastName}
+                </Typography>
+                <Typography>
+                  <Typography weight="semibold">Username:</Typography> {user.username}
+                </Typography>
+              </>
+            )}
+            <Button title="Logout" variant="danger" size="md" onPress={logout} />
+          </Stack>
+        </Box>
+      </Stack>
 
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes. Press{' '}
-          <ThemedText type="defaultSemiBold">
+      <Stack space="sm">
+        <Typography variant="h3">Step 1: Try it</Typography>
+        <Typography>
+          Edit <Typography weight="semibold">app/(tabs)/index.tsx</Typography> to see changes. Press{' '}
+          <Typography weight="semibold">
             {Platform.select({
               ios: 'cmd + d',
               android: 'cmd + m',
               web: 'F12',
             })}
-          </ThemedText>{' '}
+          </Typography>{' '}
           to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
+        </Typography>
+      </Stack>
+
+      <Stack space="sm">
         <Link href="/modal">
           <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
+            <Typography variant="h3">Step 2: Explore</Typography>
           </Link.Trigger>
           <Link.Preview />
           <Link.Menu>
@@ -72,51 +77,23 @@ export default function HomeScreen() {
           </Link.Menu>
         </Link>
 
-        <ThemedText>{`Tap the Explore tab to learn more about what's included in this starter app.`}</ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
+        <Typography>{`Tap the Explore tab to learn more about what's included in this starter app.`}</Typography>
+      </Stack>
+
+      <Stack space="sm">
+        <Typography variant="h3">Step 3: Get a fresh start</Typography>
+        <Typography>
           {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
+          <Typography weight="semibold">npm run reset-project</Typography> to get a fresh{' '}
+          <Typography weight="semibold">app</Typography> directory. This will move the current{' '}
+          <Typography weight="semibold">app</Typography> to <Typography weight="semibold">app-example</Typography>.
+        </Typography>
+      </Stack>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  authContainer: {
-    backgroundColor: 'rgba(0, 122, 255, 0.1)',
-    padding: 16,
-    borderRadius: 10,
-    gap: 8,
-  },
-  logoutButton: {
-    backgroundColor: '#FF3B30',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-    alignSelf: 'flex-start',
-    marginTop: 8,
-  },
-  logoutButtonText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '600',
-  },
   reactLogo: {
     height: 178,
     width: 290,

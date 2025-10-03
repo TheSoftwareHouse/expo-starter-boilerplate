@@ -1,17 +1,17 @@
 import { Link } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { Box } from '@/components/ui/Box';
+import { Typography } from '@/components/ui/Typography';
 
 export default function ModalScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">This is a modal</ThemedText>
+    <Box style={styles.container}>
+      <Typography variant="h1">This is a modal</Typography>
       <Link href="/" dismissTo style={styles.link}>
-        <ThemedText type="link">Go to home screen</ThemedText>
+        <Typography color="primary">Go to home screen</Typography>
       </Link>
-    </ThemedView>
+    </Box>
   );
 }
 

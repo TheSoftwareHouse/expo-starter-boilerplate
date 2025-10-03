@@ -2,8 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { authQueries } from '@/api/actions/auth/auth.queries';
 import { GetMeQueryResponse } from '@/api/actions/auth/auth.types';
-import { GenericQueryOptions } from '@/hooks/useQuery/useQuery.types';
-import { useQuery } from '../useQuery/useQuery';
+import { GenericQueryOptions, useQuery } from '@/hooks/useQuery';
 
 export const useUser = (options?: GenericQueryOptions<GetMeQueryResponse>, mock?: boolean) => {
   const queryClient = useQueryClient();

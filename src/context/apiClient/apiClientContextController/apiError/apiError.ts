@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import zod from 'zod';
+import zod from 'zod/v4';
 
 import { BasicApiError, BasicErrorData, FormApiError, FormErrorData, UnknownApiError } from './apiError.types';
 

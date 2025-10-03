@@ -1,122 +1,134 @@
 import { Image } from 'expo-image';
-import { Platform, Pressable, StyleSheet } from 'react-native';
+import { Platform, Pressable } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
+import { useStyles, useAuth } from '@/hooks';
 import { ExternalLink } from '@/components/ExternalLink';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { Collapsible } from '@/components/ui/Collapsible';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Fonts } from '@/constants/theme';
-import { useAuth } from '@/hooks';
+import { Box } from '@/components/ui/Box';
+import { Typography } from '@/components/ui/Typography';
 
 export default function TabTwoScreen() {
   const { user, logout, isAuthenticated } = useAuth();
+  const { theme } = useStyles();
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+      headerBackgroundColor={{ light: theme.colors.border, dark: theme.colors.surface }}
       headerImage={
         <IconSymbol
           size={310}
-          color="#808080"
+          color={theme.colors.textMuted}
           name="chevron.left.forwardslash.chevron.right"
           style={styles.headerImage}
         />
       }
     >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
+      <Box style={styles.titleContainer}>
+        <Typography
+          variant="h1"
           style={{
-            fontFamily: Fonts.rounded,
+            fontFamily: Platform.select({
+              ios: 'ui-rounded',
+              default: 'normal',
+              web: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
+            }),
           }}
         >
           Explore
-        </ThemedText>
-      </ThemedView>
+        </Typography>
+      </Box>
 
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
+      <Typography>This app includes example code to help you get started.</Typography>
 
       <Collapsible title="🔐 Protected Routes Demo">
-        <ThemedView style={styles.authInfo}>
-          <ThemedText>
-            <ThemedText type="defaultSemiBold">Authentication Status:</ThemedText>{' '}
+        <Box padding="md" borderRadius="md" style={styles.authInfo}>
+          <Typography>
+            <Typography weight="bold">Authentication Status:</Typography>{' '}
             {isAuthenticated ? '✅ Authenticated' : '❌ Not Authenticated'}
-          </ThemedText>
+          </Typography>
           {user && (
-            <ThemedText>
-              <ThemedText type="defaultSemiBold">Logged in as:</ThemedText> {user.firstName} {user.lastName} (@
+            <Typography>
+              <Typography weight="bold">Logged in as:</Typography> {user.firstName} {user.lastName} (@
               {user.username})
-            </ThemedText>
+            </Typography>
           )}
-          <ThemedText style={styles.infoText}>
+          <Typography style={styles.infoText}>
             This content is only visible to authenticated users. When you logout, you&apos;ll be redirected to the login
             screen.
-          </ThemedText>
+          </Typography>
           <Pressable style={styles.logoutButton} onPress={logout}>
-            <ThemedText style={styles.logoutButtonText}>Logout</ThemedText>
+            <Typography style={styles.logoutButtonText}>Logout</Typography>
           </Pressable>
-        </ThemedView>
+        </Box>
       </Collapsible>
 
       <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens: <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText> sets up the tab
-          navigator.
-        </ThemedText>
+        <Typography>
+          This app has two screens: <Typography weight="bold">app/(tabs)/index.tsx</Typography> and{' '}
+          <Typography weight="bold">app/(tabs)/explore.tsx</Typography>
+        </Typography>
+        <Typography>
+          The layout file in <Typography weight="bold">app/(tabs)/_layout.tsx</Typography> sets up the tab navigator.
+        </Typography>
         <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
+          <Typography color="primary">Learn more</Typography>
         </ExternalLink>
       </Collapsible>
       <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
+        <Typography>
           You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
+          <Typography weight="bold">w</Typography> in the terminal running this project.
+        </Typography>
       </Collapsible>
       <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for different screen densities
-        </ThemedText>
+        <Typography>
+          For static images, you can use the <Typography weight="bold">@2x</Typography> and{' '}
+          <Typography weight="bold">@3x</Typography> suffixes to provide files for different screen densities
+        </Typography>
         <Image
           source={require('@/assets/images/react-logo.png')}
           style={{ width: 100, height: 100, alignSelf: 'center' }}
         />
         <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
+          <Typography color="primary">Learn more</Typography>
         </ExternalLink>
       </Collapsible>
       <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect what the user&apos;s
-          current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
+        <Typography>
+          This template has light and dark mode support. The <Typography weight="bold">useStyles()</Typography> hook
+          lets you access the current theme and automatically adapts UI colors and styling accordingly.
+        </Typography>
         <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
+          <Typography color="primary">Learn more</Typography>
         </ExternalLink>
       </Collapsible>
       <Collapsible title="Animations">
-        <ThemedText>
+        <Typography>
           This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
+          <Typography weight="bold">components/HelloWave.tsx</Typography> component uses the powerful{' '}
+          <Typography
+            weight="bold"
+            style={{
+              fontFamily: Platform.select({
+                ios: 'ui-monospace',
+                default: 'monospace',
+                web: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+              }),
+            }}
+          >
             react-native-reanimated
-          </ThemedText>{' '}
+          </Typography>{' '}
           library to create a waving hand animation.
-        </ThemedText>
+        </Typography>
         {Platform.select({
           ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText> component provides a
-              parallax effect for the header image.
-            </ThemedText>
+            <Typography>
+              The <Typography weight="bold">components/ParallaxScrollView.tsx</Typography> component provides a parallax
+              effect for the header image.
+            </Typography>
           ),
         })}
       </Collapsible>
@@ -124,39 +136,39 @@ export default function TabTwoScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   headerImage: {
-    color: '#808080',
+    color: theme.colors.textMuted,
     bottom: -90,
     left: -35,
     position: 'absolute',
   },
   titleContainer: {
     flexDirection: 'row',
-    gap: 8,
+    gap: theme.spacing(2),
   },
   authInfo: {
-    backgroundColor: 'rgba(0, 122, 255, 0.1)',
-    padding: 16,
-    borderRadius: 10,
-    gap: 8,
+    backgroundColor: `${theme.colors.primary}1A`, // 10% opacity
+    padding: theme.spacing(4),
+    borderRadius: theme.borderRadius.md,
+    gap: theme.spacing(2),
   },
   infoText: {
-    fontSize: 14,
+    fontSize: theme.typography.fontSize.sm,
     opacity: 0.8,
     fontStyle: 'italic',
   },
   logoutButton: {
-    backgroundColor: '#FF3B30',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
+    backgroundColor: theme.colors.error,
+    paddingHorizontal: theme.spacing(5),
+    paddingVertical: theme.spacing(2.5),
+    borderRadius: theme.borderRadius.sm,
     alignSelf: 'flex-start',
-    marginTop: 8,
+    marginTop: theme.spacing(2),
   },
   logoutButtonText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '600',
+    color: theme.colors.background,
+    fontSize: theme.typography.fontSize.sm,
+    fontWeight: theme.typography.fontWeight.semibold,
   },
-});
+}));

@@ -1,9 +1,9 @@
 import axios, { AxiosRequestHeaders, InternalAxiosRequestConfig } from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-import { refreshTokenUrl } from '@/api/actions/auth/auth.mutations';
 import { RefreshTokenMutationResponse } from '@/api/actions/auth/auth.types';
 import { authStorage } from '@/context/auth/authStorage/AuthStorage';
+import { REFRESH_TOKEN_URL } from '@/api/axios/constants';
 
 export const requestSuccessInterceptor = async (
   config: InternalAxiosRequestConfig,
@@ -17,7 +17,7 @@ export const requestSuccessInterceptor = async (
 
   if (isTokenExpired) {
     try {
-      const { data } = await axios.post<RefreshTokenMutationResponse>(refreshTokenUrl, {
+      const { data } = await axios.post<RefreshTokenMutationResponse>(REFRESH_TOKEN_URL, {
         accessToken: authStorage.accessToken,
         refreshToken: authStorage.refreshToken,
       });

@@ -47,7 +47,8 @@
           "url": "https://sentry.io/",
           "note": "Sentry configuration will be loaded from environment variables: SENTRY_ORG, SENTRY_PROJECT, SENTRY_AUTH_TOKEN"
         }
-      ]
+      ],
+      "react-native-edge-to-edge"
     ],
     "experiments": {
       "typedRoutes": true,

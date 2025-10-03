@@ -6,7 +6,7 @@ import {
   responseSuccessInterceptor,
 } from '@/context/apiClient/apiClientContextController/interceptors/responseInterceptors';
 
-export const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+import { BASE_URL } from './constants';
 
 export const axiosClient = axios.create({
   headers: {

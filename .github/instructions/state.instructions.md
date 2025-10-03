@@ -228,7 +228,7 @@ describe('useAuth', () => {
 ```typescript
 import { useState } from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
-import { ThemedText } from '@/components/themed-text';
+import { Typography } from '@/components/ui';
 
 const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -258,12 +258,12 @@ const UserProfile = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    padding: 16,
+    padding: theme.spacing(4),
   },
-});
+}));
 ```
 
 ### 2. Complex State with useReducer
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
 ```typescript
 import { useReducer } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import { ThemedText } from '@/components/themed-text';
+import { Typography } from '@/components/ui';
 
 // State and actions
 interface TodoState {
@@ -379,12 +379,12 @@ const TodoApp = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    padding: 16,
+    padding: theme.spacing(4),
   },
-});
+}));
 ```
 
 ### 3. Custom State Hook
@@ -414,30 +414,30 @@ const Modal = () => {
   return (
     <View style={styles.container}>
       <Pressable style={styles.button} onPress={toggle}>
-        <ThemedText>Open Modal</ThemedText>
+        <Typography>Open Modal</Typography>
       </Pressable>
       {isOpen && (
         <ModalComponent onClose={setFalse}>
-          <ThemedText>Modal content</ThemedText>
+          <Typography>Modal content</Typography>
         </ModalComponent>
       )}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    padding: 16,
+    padding: theme.spacing(4),
   },
   button: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
+    backgroundColor: theme.colors.primary,
+    paddingHorizontal: theme.spacing(4),
+    paddingVertical: theme.spacing(2),
+    borderRadius: theme.borderRadius.md,
     alignItems: 'center',
   },
-});
+}));
 ```
 
 ## Data Flow Patterns
@@ -486,15 +486,15 @@ const UserGrid = ({ users, onUserSelect }: UserGridProps) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    padding: 16,
+    padding: theme.spacing(4),
   },
   userGrid: {
     flex: 1,
   },
-});
+}));
 ```
 
 ### 2. Context for Global State
@@ -503,22 +503,22 @@ const styles = StyleSheet.create({
 // Usage in components
 const Header = () => {
   const { isAuthenticated, logout, user } = useAuth();
-  const colorScheme = useColorScheme();
+  const { theme, rt } = useStyles();
 
   return (
-    <View style={[styles.header, { backgroundColor: colorScheme === 'dark' ? '#000' : '#fff' }]}>
-      <ThemedText type="title">My App</ThemedText>
+    <Box style={[styles.header, { backgroundColor: rt.themeName === 'dark' ? theme.colors.background : theme.colors.surface }]}>
+      <Typography variant="h1">My App</Typography>
       {isAuthenticated ? (
-        <View style={styles.userSection}>
-          <ThemedText>Welcome, {user?.name}</ThemedText>
+        <Box style={styles.userSection}>
+          <Typography>Welcome, {user?.name}</Typography>
           <Pressable style={styles.logoutButton} onPress={logout}>
-            <ThemedText style={styles.logoutText}>Logout</ThemedText>
+            <Typography style={styles.logoutText}>Logout</Typography>
           </Pressable>
-        </View>
+        </Box>
       ) : (
         <LoginButton />
       )}
-    </View>
+    </Box>
   );
 };
 
@@ -530,43 +530,43 @@ const Settings = () => {
   };
 
   return (
-    <View style={styles.settingsContainer}>
-      <ThemedText type="subtitle">Settings</ThemedText>
+    <Box style={styles.settingsContainer}>
+      <Typography variant="h2">Settings</Typography>
       <LanguageSelector
         current={locale}
         onChange={handleLanguageChange}
       />
-    </View>
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    padding: theme.spacing(4),
   },
   userSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: theme.spacing(2),
   },
   logoutButton: {
-    backgroundColor: '#FF3B30',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
+    backgroundColor: theme.colors.error,
+    paddingHorizontal: theme.spacing(2),
+    paddingVertical: theme.spacing(1),
+    borderRadius: theme.borderRadius.sm,
   },
   logoutText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: theme.typography.fontSize.sm,
   },
   settingsContainer: {
     flex: 1,
-    padding: 16,
+    padding: theme.spacing(4),
   },
-});
+}));
 ```
 
 ## Provider Setup

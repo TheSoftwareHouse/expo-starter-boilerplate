@@ -61,11 +61,11 @@ export const authQueries = {
 **Usage in components:**
 
 ```typescript
-import { View, FlatList, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { useQuery } from '@/hooks/useQuery/useQuery';
 import { authQueries } from '@/api/actions/auth/auth.queries';
-import { ThemedText } from '@/components/themed-text';
-import { Loader } from '@/components/ui/loader';
+import { Typography, Box, Loader } from '@/components/ui';
 
 const UsersList = () => {
   // List with parameters using query factory
@@ -91,24 +91,24 @@ const UsersList = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <Box style={styles.container}>
       <FlatList
         data={usersResponse?.users}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <ThemedText>{item.name}</ThemedText>
+          <Typography>{item.name}</Typography>
         )}
       />
-    </View>
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    padding: 16,
+    padding: theme.spacing(4),
   },
-});
+}));
 ```
 
 ### 3. Mutation Development
@@ -147,16 +147,15 @@ export const authMutations = {
     throw new Error('Invalid credentials');
   },
 };
-
-export const refreshTokenUrl = `${BASE_URL}/users/refresh-token`;
 ```
 
 **Usage in components:**
 
 ```typescript
-import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Pressable } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { useMutation } from '@/hooks/useMutation/useMutation';
-import { ThemedText } from '@/components/themed-text';
+import { Typography, Box } from '@/components/ui';
 
 const LoginForm = () => {
   const { mutateAsync: login, isPending } = useMutation('loginMutation');
@@ -171,29 +170,29 @@ const LoginForm = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Box style={styles.container}>
       <Pressable
         style={[styles.button, isPending && styles.buttonDisabled]}
         onPress={handleLogin}
         disabled={isPending}
       >
-        <ThemedText style={styles.buttonText}>
+        <Typography style={styles.buttonText}>
           {isPending ? 'Signing in...' : 'Sign In'}
-        </ThemedText>
+        </Typography>
       </Pressable>
-    </View>
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
-    padding: 16,
+    padding: theme.spacing(4),
   },
   button: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
+    backgroundColor: theme.colors.primary,
+    paddingVertical: theme.spacing(2),
+    paddingHorizontal: theme.spacing(6),
+    borderRadius: theme.borderRadius.md,
     alignItems: 'center',
   },
   buttonDisabled: {
@@ -201,10 +200,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: theme.typography.fontSize.md,
+    fontWeight: theme.typography.fontWeight.semibold,
   },
-});
+}));
 ```
 
 ### 4. Infinite Queries
@@ -235,11 +234,11 @@ export const authQueries = {
 **Usage:**
 
 ```typescript
-import { View, FlatList, Pressable, StyleSheet } from 'react-native';
+import { FlatList, Pressable } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { useInfiniteQuery } from '@/hooks/useInfiniteQuery/useInfiniteQuery';
 import { authQueries } from '@/api/actions/auth/auth.queries';
-import { ThemedText } from '@/components/themed-text';
-import { Loader } from '@/components/ui/loader';
+import { Typography, Box } from '@/components/ui';
 
 const InfiniteUsersList = () => {
   const {
@@ -254,9 +253,9 @@ const InfiniteUsersList = () => {
   const allUsers = data?.pages.flatMap(page => page.users) ?? [];
 
   const renderUser = ({ item: user }) => (
-    <View style={styles.userCard}>
-      <ThemedText>{user.name}</ThemedText>
-    </View>
+    <Box style={styles.userCard}>
+      <Typography>{user.name}</Typography>
+    </Box>
   );
 
   const renderFooter = () => {
@@ -268,15 +267,15 @@ const InfiniteUsersList = () => {
         onPress={fetchNextPage}
         disabled={isFetching}
       >
-        <ThemedText style={styles.loadMoreText}>
+        <Typography style={styles.loadMoreText}>
           {isFetching ? 'Loading...' : 'Load More'}
-        </ThemedText>
+        </Typography>
       </Pressable>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <Box style={styles.container}>
       <FlatList
         data={allUsers}
         keyExtractor={(item) => item.id}
@@ -285,37 +284,37 @@ const InfiniteUsersList = () => {
         onEndReached={() => hasNextPage && fetchNextPage()}
         onEndReachedThreshold={0.5}
       />
-    </View>
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    padding: 16,
+    padding: theme.spacing(4),
   },
   userCard: {
-    padding: 12,
+    padding: theme.spacing(2),
     marginVertical: 4,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.borderRadius.md,
   },
   loadMoreButton: {
-    backgroundColor: '#007AFF',
-    padding: 12,
-    borderRadius: 8,
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing(2),
+    borderRadius: theme.borderRadius.md,
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: theme.spacing(4),
   },
   loadMoreButtonDisabled: {
     opacity: 0.6,
   },
   loadMoreText: {
     color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: theme.typography.fontSize.md,
+    fontWeight: theme.typography.fontWeight.semibold,
   },
-});
+}));
 ```
 
 ## Type Definitions
@@ -374,12 +373,11 @@ export type RefreshTokenMutationResponse = {
 **Use the built-in error handling:**
 
 ```typescript
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { useHandleQueryErrors } from '@/hooks/useHandleQueryErrors/useHandleQueryErrors';
 import { useQuery } from '@/hooks/useQuery/useQuery';
 import { authQueries } from '@/api/actions/auth/auth.queries';
-import { ThemedText } from '@/components/themed-text';
-import { Loader } from '@/components/ui/loader';
+import { Typography, Box, Loader } from '@/components/ui';
 
 const UsersList = () => {
   const { data, error, isError, isLoading } = useQuery({
@@ -395,36 +393,36 @@ const UsersList = () => {
 
   if (isError) {
     return (
-      <View style={styles.errorContainer}>
-        <ThemedText style={styles.errorText}>Failed to load users</ThemedText>
-      </View>
+      <Box style={styles.errorContainer}>
+        <Typography style={styles.errorText}>Failed to load users</Typography>
+      </Box>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <Box style={styles.container}>
       {/* Render users */}
-    </View>
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    padding: 16,
+    padding: theme.spacing(4),
   },
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: theme.spacing(4),
   },
   errorText: {
-    fontSize: 16,
-    color: '#FF3B30',
+    fontSize: theme.typography.fontSize.md,
+    color: theme.colors.error,
     textAlign: 'center',
   },
-});
+}));
 ```
 
 ## Best Practices
@@ -438,6 +436,8 @@ const styles = StyleSheet.create({
 7. **Use optimistic updates**: For mutations that should feel instant
 8. **Follow React Native patterns**: Use `FlatList` for lists, `StyleSheet` for styling
 9. **Use @ aliases**: Import from `@/` for internal modules
+10. **Zod imports**: Always use `from 'zod/v4'` instead of `from 'zod'` for schema validation
+11. **Constants naming**: Use SCREAMING_SNAKE_CASE for constants (e.g., `BASE_URL`, `REFRESH_TOKEN_URL`)
 
 ## Common Patterns
 

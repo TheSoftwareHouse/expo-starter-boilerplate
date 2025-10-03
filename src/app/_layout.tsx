@@ -5,8 +5,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { Loader } from '@/components/ui/loader';
-import { useAuth } from '@/hooks';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useAuth, useStyles } from '@/hooks';
 import { logger } from '@/integrations/logger';
 import { AppProviders } from '@/providers/AppProviders';
 
@@ -16,7 +15,7 @@ export const unstable_settings = {
 
 function AppLayout() {
   const { isAuthenticated, isAuthenticating } = useAuth();
-  const colorScheme = useColorScheme();
+  const { rt } = useStyles();
 
   useEffect(() => {
     // Initialize logger on app start
@@ -29,7 +28,7 @@ function AppLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={rt.themeName === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         {/* Protected routes - only accessible when authenticated */}
         <Stack.Protected guard={isAuthenticated}>
