@@ -9,10 +9,31 @@ import { Collapsible } from '@/components/ui/Collapsible';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Box } from '@/components/ui/Box';
 import { Typography } from '@/components/ui/Typography';
+import { List } from '@/components/ui/List';
+
+// Sample data for the List component demo
+const sampleListData = [
+  { id: '1', title: '🚀 High Performance', description: 'Legend List provides much better performance than FlatList' },
+  { id: '2', title: '⚡ Dynamic Sizing', description: 'Supports dynamically sized items out of the box' },
+  { id: '3', title: '🔄 Drop-in Replacement', description: 'Easy migration from FlatList with similar API' },
+  { id: '4', title: '📱 Cross Platform', description: 'Works perfectly on iOS, Android, and Web' },
+  { id: '5', title: '🎨 Customizable', description: 'Multiple variants and styling options available' },
+];
 
 export default function TabTwoScreen() {
   const { user, logout, isAuthenticated } = useAuth();
   const { theme } = useStyles();
+
+  const renderListItem = ({ item }: { item: { id: string; title: string; description: string } }) => (
+    <Box p="md" style={{ marginBottom: 8 }}>
+      <Typography variant="h4" style={{ marginBottom: 4 }}>
+        {item.title}
+      </Typography>
+      <Typography color="secondary" size="sm">
+        {item.description}
+      </Typography>
+    </Box>
+  );
 
   return (
     <ParallaxScrollView
@@ -43,8 +64,45 @@ export default function TabTwoScreen() {
 
       <Typography>This app includes example code to help you get started.</Typography>
 
-      <Collapsible title="🔐 Protected Routes Demo">
-        <Box padding="md" borderRadius="md" style={styles.authInfo}>
+      <Collapsible title="� List Component Demo">
+        <Typography style={{ marginBottom: 16 }}>
+          The <Typography weight="bold">List</Typography> component is a lightweight wrapper around{' '}
+          <Typography weight="bold">@legendapp/list</Typography> providing better performance than FlatList:
+        </Typography>
+
+        <Typography variant="h4" style={{ marginBottom: 12 }}>
+          Default Variant:
+        </Typography>
+        <Box style={styles.listContainer}>
+          <List
+            data={sampleListData}
+            renderItem={renderListItem}
+            keyExtractor={(item) => item.id}
+            estimatedItemSize={80}
+          />
+        </Box>
+
+        <Typography variant="h4" style={{ marginBottom: 12, marginTop: 16 }}>
+          Inset Variant:
+        </Typography>
+        <Box style={styles.listContainer}>
+          <List
+            variant="inset"
+            padding="sm"
+            data={sampleListData.slice(0, 3)}
+            renderItem={renderListItem}
+            keyExtractor={(item) => item.id}
+            estimatedItemSize={80}
+          />
+        </Box>
+
+        <Typography style={{ marginTop: 16, fontSize: 14, opacity: 0.8 }}>
+          💡 Use List instead of FlatList for better performance, especially with dynamic item sizes.
+        </Typography>
+      </Collapsible>
+
+      <Collapsible title="�🔐 Protected Routes Demo">
+        <Box p="md" borderRadius="md" style={styles.authInfo}>
           <Typography>
             <Typography weight="bold">Authentication Status:</Typography>{' '}
             {isAuthenticated ? '✅ Authenticated' : '❌ Not Authenticated'}
@@ -146,6 +204,12 @@ const styles = StyleSheet.create((theme) => ({
   titleContainer: {
     flexDirection: 'row',
     gap: theme.spacing(2),
+  },
+  listContainer: {
+    height: 200,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.borderRadius.md,
+    overflow: 'hidden',
   },
   authInfo: {
     backgroundColor: `${theme.colors.primary}1A`, // 10% opacity

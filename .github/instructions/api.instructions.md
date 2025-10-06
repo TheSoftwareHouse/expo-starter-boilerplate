@@ -61,11 +61,10 @@ export const authQueries = {
 **Usage in components:**
 
 ```typescript
-import { FlatList } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import { useQuery } from '@/hooks/useQuery/useQuery';
 import { authQueries } from '@/api/actions/auth/auth.queries';
-import { Typography, Box, Loader } from '@/components/ui';
+import { Typography, Box, Loader, List } from '@/components/ui';
 
 const UsersList = () => {
   // List with parameters using query factory
@@ -92,12 +91,13 @@ const UsersList = () => {
 
   return (
     <Box style={styles.container}>
-      <FlatList
-        data={usersResponse?.users}
+      <List
+        data={usersResponse?.users || []}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <Typography>{item.name}</Typography>
         )}
+        estimatedItemSize={60}
       />
     </Box>
   );
@@ -234,11 +234,11 @@ export const authQueries = {
 **Usage:**
 
 ```typescript
-import { FlatList, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import { useInfiniteQuery } from '@/hooks/useInfiniteQuery/useInfiniteQuery';
 import { authQueries } from '@/api/actions/auth/auth.queries';
-import { Typography, Box } from '@/components/ui';
+import { Typography, Box, List } from '@/components/ui';
 
 const InfiniteUsersList = () => {
   const {
@@ -276,13 +276,14 @@ const InfiniteUsersList = () => {
 
   return (
     <Box style={styles.container}>
-      <FlatList
+      <List
         data={allUsers}
         keyExtractor={(item) => item.id}
         renderItem={renderUser}
         ListFooterComponent={renderFooter}
         onEndReached={() => hasNextPage && fetchNextPage()}
         onEndReachedThreshold={0.5}
+        estimatedItemSize={80}
       />
     </Box>
   );
@@ -430,11 +431,11 @@ const styles = StyleSheet.create((theme) => ({
 1. **Use descriptive names**: `getCurrentUser` not `getUser`
 2. **Group related operations**: Keep all auth operations in `auth` collection
 3. **Type everything**: Never use `any` - define proper interfaces
-4. **Handle loading states**: Always show `Loader` component or loading indicators
+4. **Handle loading states**: Always show loading indicators (see [Component Instructions](components.instructions.md))
 5. **Handle errors gracefully**: Use `useHandleQueryErrors` and `Alert` for user feedback
 6. **Cache efficiently**: Leverage React Query's built-in caching
 7. **Use optimistic updates**: For mutations that should feel instant
-8. **Follow React Native patterns**: Use `FlatList` for lists, `StyleSheet` for styling
+8. **Follow component patterns**: Use project UI components (see [Component Instructions](components.instructions.md))
 9. **Use @ aliases**: Import from `@/` for internal modules
 10. **Zod imports**: Always use `from 'zod/v4'` instead of `from 'zod'` for schema validation
 11. **Constants naming**: Use SCREAMING_SNAKE_CASE for constants (e.g., `BASE_URL`, `REFRESH_TOKEN_URL`)

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native-unistyles';
 
 export const stackStyles = StyleSheet.create((theme) => ({
-  stack: {
+  container: {
     flexDirection: 'column',
   },
 
@@ -12,15 +12,6 @@ export const stackStyles = StyleSheet.create((theme) => ({
   vertical: {
     flexDirection: 'column',
   },
-
-  // Spacing variants
-  spaceNone: { gap: 0 },
-  spaceXs: { gap: theme.spacing(1) },
-  spaceSm: { gap: theme.spacing(2) },
-  spaceMd: { gap: theme.spacing(4) },
-  spaceLg: { gap: theme.spacing(6) },
-  spaceXl: { gap: theme.spacing(8) },
-  spaceXxl: { gap: theme.spacing(12) },
 
   // Alignment variants
   alignStart: { alignItems: 'flex-start' },

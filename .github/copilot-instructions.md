@@ -30,6 +30,7 @@ This is a carefully crafted Expo starter template featuring:
 For detailed guidance on specific areas, refer to these specialized instruction files:
 
 - **[API Development](instructions/api.instructions.md)** - API patterns, React Query usage, data fetching
+- **[Component Development](instructions/components.instructions.md)** - UI components, List usage, component patterns
 - **[State Management](instructions/state.instructions.md)** - Context patterns, global state management
 - **[Styling with Unistyles](instructions/styling.instructions.md)** - Theming, responsive design, component styling
 - **[Git and Conventional Commits](instructions/git.instructions.md)** - Commit message format, conventional commits,

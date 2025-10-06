@@ -1,34 +1,32 @@
-import { Image } from 'expo-image';
+import { Image, type ImageSource } from 'expo-image';
 import { Link } from 'expo-router';
 import { Platform } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
-import { useStyles, useAuth } from '@/hooks';
+import { useAuth } from '@/hooks';
 import { HelloWave } from '@/components/HelloWave';
 import { ParallaxScrollView } from '@/components/ParallaxScrollView';
-import { Stack } from '@/components/ui/Stack';
-import { Typography } from '@/components/ui/Typography';
-import { Box } from '@/components/ui/Box';
-import { Button } from '@/components/ui/Button';
+import { Stack, Typography, Box, Button } from '@/components/ui';
 
 export default function HomeScreen() {
   const { user, logout } = useAuth();
-  const { theme } = useStyles();
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: theme.colors.info, dark: theme.colors.surface }}
-      headerImage={<Image source={require('@/assets/images/partial-react-logo.png')} style={styles.reactLogo} />}
+      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerImage={
+        <Image source={require('@/assets/images/partial-react-logo.png') as ImageSource} style={styles.reactLogo} />
+      }
     >
-      <Stack direction="horizontal" align="center" space="sm">
-        <Typography variant="h1">Welcome{user ? `, ${user.firstName}!` : '!'}</Typography>
+      <Stack direction="horizontal" align="center" gap="sm">
+        <Typography variant="h1">Welcome!</Typography>
         <HelloWave />
       </Stack>
 
-      <Stack space="sm">
+      <Stack gap="sm">
         <Typography variant="h2">🔐 Authentication Status</Typography>
-        <Box background="surface" padding="md" borderRadius="md" border="sm">
-          <Stack space="sm">
+        <Box background="surface" p="md" borderRadius="md" border="sm">
+          <Stack gap="sm">
             <Typography>
               <Typography weight="semibold">Status:</Typography> Authenticated ✅
             </Typography>
@@ -47,7 +45,7 @@ export default function HomeScreen() {
         </Box>
       </Stack>
 
-      <Stack space="sm">
+      <Stack gap="sm">
         <Typography variant="h3">Step 1: Try it</Typography>
         <Typography>
           Edit <Typography weight="semibold">app/(tabs)/index.tsx</Typography> to see changes. Press{' '}
@@ -62,7 +60,7 @@ export default function HomeScreen() {
         </Typography>
       </Stack>
 
-      <Stack space="sm">
+      <Stack gap="sm">
         <Link href="/modal">
           <Link.Trigger>
             <Typography variant="h3">Step 2: Explore</Typography>
@@ -80,7 +78,7 @@ export default function HomeScreen() {
         <Typography>{`Tap the Explore tab to learn more about what's included in this starter app.`}</Typography>
       </Stack>
 
-      <Stack space="sm">
+      <Stack gap="sm">
         <Typography variant="h3">Step 3: Get a fresh start</Typography>
         <Typography>
           {`When you're ready, run `}

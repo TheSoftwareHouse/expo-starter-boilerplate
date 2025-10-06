@@ -24,7 +24,7 @@ function AppLayout() {
 
   // Show loading state while checking authentication
   if (isAuthenticating) {
-    return <Loader />;
+    return <Loader variant="fullScreen" />;
   }
 
   return (
