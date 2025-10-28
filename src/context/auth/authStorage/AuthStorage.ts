@@ -1,5 +1,7 @@
 import { MMKV } from 'react-native-mmkv';
 
+import { env } from '@/env';
+
 import { Storage } from './AuthStorage.types';
 
 const ACCESS_TOKEN_KEY = 'accessToken';
@@ -89,7 +91,7 @@ class AuthStorage {
 
 const mmkvStorage = new MMKV({
   id: 'auth-storage',
-  encryptionKey: process.env.AUTH_STORAGE_ENCRYPTION_KEY || 'fallback-dev-key-change-in-production',
+  encryptionKey: env.EXPO_PUBLIC_AUTH_STORAGE_ENCRYPTION_KEY,
 });
 
 const storage: Storage = {

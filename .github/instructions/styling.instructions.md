@@ -6,6 +6,19 @@ This project uses **React Native Unistyles v3** for styling, theming, and respon
 powerful StyleSheet replacement with built-in theming, breakpoints, variants, and advanced styling features while
 maintaining compatibility with React Native's styling system.
 
+## Official Documentation
+
+For comprehensive information about React Native Unistyles 3.0, refer to the official documentation:
+
+- **[Abridged documentation](https://unistyl.es/llms-small.txt)**: A compact version with essential features and best
+  practices (recommended for quick reference)
+- **[Complete documentation](https://unistyl.es/llms-full.txt)**: The full documentation covering all features and
+  advanced use cases
+
+**Note**: Both documentation sets are automatically generated from the official source and represent the definitive
+guide for React Native Unistyles 3.0. When encountering advanced styling scenarios not covered in this document, consult
+the official documentation.
+
 ## Core Styling Principles
 
 ### 1. Use Unistyles StyleSheet Instead of React Native StyleSheet

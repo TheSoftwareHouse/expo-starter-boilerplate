@@ -217,6 +217,93 @@ The logger automatically:
 - **Performance Monitoring**: Tracks app performance and network requests
 - **Error Boundary Integration**: Automatically captures unhandled errors
 
+## Environment Variables
+
+This project uses a centralized, type-safe environment variable system with Zod validation.
+
+### Configuration
+
+1. **Copy the environment template**:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. **Configure your variables** in `.env.local`:
+
+   ```bash
+   # API Configuration
+   EXPO_PUBLIC_API_URL=https://your-api.com
+   EXPO_PUBLIC_DEFAULT_LOCALE=en
+
+   # MMKV Encryption (32+ characters required)
+   EXPO_PUBLIC_AUTH_STORAGE_ENCRYPTION_KEY=your-secure-random-64-character-hex-key
+
+   # Sentry (optional)
+   SENTRY_ORG=your-sentry-org
+   SENTRY_PROJECT=your-project
+   SENTRY_AUTH_TOKEN=your-token
+   ```
+
+3. **Start the app** - environment variables are automatically validated on startup
+
+### Usage in Code
+
+**Always import from `@/env` instead of using `process.env` directly:**
+
+```typescript
+// ✅ Correct
+import { env } from '@/env';
+
+const apiUrl = env.EXPO_PUBLIC_API_URL;
+const locale = env.EXPO_PUBLIC_DEFAULT_LOCALE;
+
+// ❌ Wrong - ESLint will prevent this
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+```
+
+### Adding New Variables
+
+**For client-side variables** (accessible in the app):
+
+1. Add the variable to `.env.local` with `EXPO_PUBLIC_` prefix
+2. Update the schema in `src/env.ts`:
+   ```typescript
+   const clientEnvSchema = z.object({
+     // ... existing vars
+     EXPO_PUBLIC_YOUR_NEW_VAR: z.string().min(1, 'EXPO_PUBLIC_YOUR_NEW_VAR is required'),
+   });
+   ```
+3. Add explicit reference in `validateClientEnv()`:
+   ```typescript
+   const envVars = {
+     // ... existing vars
+     EXPO_PUBLIC_YOUR_NEW_VAR: process.env.EXPO_PUBLIC_YOUR_NEW_VAR,
+   };
+   ```
+4. Restart the app - validation will run automatically
+
+**For server-side variables** (build-time/CI only):
+
+1. Add the variable to `.env.local` (no `EXPO_PUBLIC_` prefix)
+2. Access directly via `process.env.YOUR_VAR` in scripts or config files
+3. Not validated or accessible in client code
+
+### Security Notes
+
+- `.env.local` is git-ignored and never committed
+- **Client-side variables** (prefixed with `EXPO_PUBLIC_`):
+  - Validated on app startup via `src/env.ts`
+  - Embedded in the app bundle and accessible at runtime
+  - Used for: API URLs, default locale, MMKV encryption key, Sentry DSN
+  - **Must have `EXPO_PUBLIC_` prefix** to be inlined by Metro bundler
+- **Server-side variables** (no prefix):
+  - NOT validated in `src/env.ts` to avoid build failures
+  - Only available during build-time, CI, and in Node.js scripts
+  - Used for: Sentry build tokens, build configuration
+  - NOT accessible in client code
+- ESLint enforces centralized env usage (no direct `process.env` access in src/)
+
 ## Learn more
 
 To learn more about developing your project with Expo, look at the following resources:

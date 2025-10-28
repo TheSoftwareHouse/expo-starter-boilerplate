@@ -81,16 +81,9 @@
   "jest": {
     "preset": "jest-expo",
     "setupFiles": [
+      "./jest.setup.js",
       "react-native-unistyles/mocks",
       "./src/styles/theme.ts"
-    ]
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,md}": [
-      "eslint --fix"
-    ],
-    "src/**/*.json": [
-      "prettier --write"
     ]
   }
 }

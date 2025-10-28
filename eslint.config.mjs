@@ -34,6 +34,24 @@ export default defineConfig([
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
+
+      // Disallow direct process.env access in src directory
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector:
+            'MemberExpression[object.name="process"][property.name="env"]:not([parent.property.name="EXPO_OS"])',
+          message:
+            'Direct access to process.env is not allowed. Import environment variables from @/env instead. Exception: process.env.EXPO_OS is allowed as it is a compile-time constant.',
+        },
+      ],
+    },
+  },
+  // Allow process.env in config files, test files, and integrations that use expo config
+  {
+    files: ['src/env.ts', 'scripts/**/*.js', 'scripts/**/*.ts'],
+    rules: {
+      'no-restricted-syntax': 'off',
     },
   },
   // Allow default exports for Expo Router files
