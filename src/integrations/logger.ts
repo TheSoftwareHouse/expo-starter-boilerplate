@@ -44,13 +44,13 @@ import {
 } from '@sentry/react-native';
 import Constants from 'expo-constants';
 
-import { env } from '@/env';
+import { Env } from '@/env';
 
 type LogLevel = 'error' | 'info' | 'warning';
 type Logger = Record<LogLevel, (message: string | Error) => void> & Record<string, unknown>;
 
 const initLogger = () => {
-  const sentryDsn = Constants.expoConfig?.extra?.sentryDsn || env.EXPO_PUBLIC_SENTRY_DSN;
+  const sentryDsn = Constants.expoConfig?.extra?.sentryDsn || Env.EXPO_PUBLIC_SENTRY_DSN;
 
   if (!sentryDsn) {
     // eslint-disable-next-line no-console

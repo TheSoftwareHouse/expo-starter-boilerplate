@@ -25,8 +25,14 @@ To create a new project using this boilerplate template:
    git commit -m "Initial commit"
    ```
 
-2. **Update project details**: Modify the `app.json` file to reflect your project's name, slug, and other configuration
-   details.
+2. **Update project details**:
+   - Open `env.js` and update the template values:
+     - `BUNDLE_ID`: Your iOS Bundle ID / Android Package Name (e.g., `com.yourcompany.yourapp`)
+     - `NAME`: Your app's display name (e.g., `My Awesome App`)
+     - `SLUG`: Your Expo slug (e.g., `my-awesome-app`)
+     - `EXPO_ACCOUNT_OWNER`: Your Expo account username
+     - `EAS_PROJECT_ID`: Get by running `npx eas init`
+     - `SCHEME`: Your app's URL scheme for deep links (e.g., `myapp`)
 
 3. **Install dependencies**:
 
@@ -219,90 +225,148 @@ The logger automatically:
 
 ## Environment Variables
 
-This project uses a centralized, type-safe environment variable system with Zod validation.
+This project uses a centralized, type-safe environment variable system with Zod validation, managed through `env.js` and
+`app.config.ts`.
+
+### Architecture
+
+- **`env.js`** (root): Loads and validates environment variables, manages app configuration
+- **`app.config.ts`**: TypeScript config that uses validated variables from `env.js`
+- **`src/env.js`**: Client-side access point - imports via `@/env` in your code
+- **`.env.{environment}`**: Environment-specific variables (development, staging, production)
 
 ### Configuration
 
-1. **Copy the environment template**:
+1. **Update app configuration** in `env.js`:
+
+   Follow the template instructions to set your:
+   - Bundle ID, app name, slug
+   - Expo account owner and EAS project ID
+   - URL scheme for deep links
+
+2. **Create environment file**:
 
    ```bash
-   cp .env.example .env.local
+   cp .env.example .env.development
    ```
 
-2. **Configure your variables** in `.env.local`:
+3. **Configure your variables** in `.env.development`:
 
    ```bash
    # API Configuration
    EXPO_PUBLIC_API_URL=https://your-api.com
    EXPO_PUBLIC_DEFAULT_LOCALE=en
 
-   # MMKV Encryption (32+ characters required)
+   # MMKV Encryption (generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
    EXPO_PUBLIC_AUTH_STORAGE_ENCRYPTION_KEY=your-secure-random-64-character-hex-key
 
    # Sentry (optional)
+   EXPO_PUBLIC_SENTRY_DSN=https://your-sentry-dsn@sentry.io/project-id
    SENTRY_ORG=your-sentry-org
    SENTRY_PROJECT=your-project
    SENTRY_AUTH_TOKEN=your-token
    ```
 
-3. **Start the app** - environment variables are automatically validated on startup
+4. **Start the app** - environment variables are automatically validated on startup
+
+### Multiple Environments
+
+The project supports multiple app variants on the same device:
+
+- **Development**: `.env.development` → `yourapp-dev://` → "YourApp (Dev)"
+- **Staging**: `.env.staging` → `yourapp-staging://` → "YourApp (Staging)"
+- **Production**: `.env.production` → `yourapp://` → "YourApp"
+
+Switch environments:
+
+```bash
+APP_ENV=staging npm start
+APP_ENV=production npm start
+```
 
 ### Usage in Code
 
-**Always import from `@/env` instead of using `process.env` directly:**
+**Always import from `@/env` - ESLint enforces this:**
 
 ```typescript
-// ✅ Correct
+// ✅ Correct - Import from @/env
 import { env } from '@/env';
 
 const apiUrl = env.EXPO_PUBLIC_API_URL;
 const locale = env.EXPO_PUBLIC_DEFAULT_LOCALE;
+const appName = env.NAME; // Dynamically generated based on APP_ENV
+const scheme = env.SCHEME; // Environment-specific URL scheme
 
-// ❌ Wrong - ESLint will prevent this
+// ❌ Wrong - Direct process.env access (ESLint error)
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+// ❌ Wrong - Importing root env.js (ESLint error)
+import { ClientEnv } from '../../env';
+
+// ✅ Platform detection - Use Platform.OS instead
+import { Platform } from 'react-native';
+if (Platform.OS === 'ios') {
+  /* ... */
+}
 ```
 
 ### Adding New Variables
 
 **For client-side variables** (accessible in the app):
 
-1. Add the variable to `.env.local` with `EXPO_PUBLIC_` prefix
-2. Update the schema in `src/env.ts`:
-   ```typescript
-   const clientEnvSchema = z.object({
+1. Add to `.env.development` with `EXPO_PUBLIC_` prefix:
+
+   ```bash
+   EXPO_PUBLIC_YOUR_NEW_VAR=your-value
+   ```
+
+2. Update the schema in `env.js`:
+
+   ```javascript
+   const client = z.object({
      // ... existing vars
-     EXPO_PUBLIC_YOUR_NEW_VAR: z.string().min(1, 'EXPO_PUBLIC_YOUR_NEW_VAR is required'),
+     EXPO_PUBLIC_YOUR_NEW_VAR: z.string().optional(), // or .min(1) for required
    });
    ```
-3. Add explicit reference in `validateClientEnv()`:
-   ```typescript
-   const envVars = {
+
+3. Add to `_clientEnv` object:
+
+   ```javascript
+   const _clientEnv = {
      // ... existing vars
      EXPO_PUBLIC_YOUR_NEW_VAR: process.env.EXPO_PUBLIC_YOUR_NEW_VAR,
    };
    ```
-4. Restart the app - validation will run automatically
 
-**For server-side variables** (build-time/CI only):
+4. Restart with clear cache:
+   ```bash
+   npm start -- --clear
+   ```
 
-1. Add the variable to `.env.local` (no `EXPO_PUBLIC_` prefix)
-2. Access directly via `process.env.YOUR_VAR` in scripts or config files
-3. Not validated or accessible in client code
+**For build-time variables** (app.config.ts only):
+
+1. Add to `.env.development` (no `EXPO_PUBLIC_` prefix)
+2. Update `buildTime` schema in `env.js`
+3. Add to `_buildTimeEnv` object
+4. Access via `Env` in `app.config.ts` only
 
 ### Security Notes
 
-- `.env.local` is git-ignored and never committed
-- **Client-side variables** (prefixed with `EXPO_PUBLIC_`):
-  - Validated on app startup via `src/env.ts`
-  - Embedded in the app bundle and accessible at runtime
-  - Used for: API URLs, default locale, MMKV encryption key, Sentry DSN
-  - **Must have `EXPO_PUBLIC_` prefix** to be inlined by Metro bundler
-- **Server-side variables** (no prefix):
-  - NOT validated in `src/env.ts` to avoid build failures
-  - Only available during build-time, CI, and in Node.js scripts
-  - Used for: Sentry build tokens, build configuration
-  - NOT accessible in client code
-- ESLint enforces centralized env usage (no direct `process.env` access in src/)
+- `.env.*` files are git-ignored and never committed (only `.env.example` is tracked)
+- **Client-side variables** (`EXPO_PUBLIC_` prefix):
+  - Validated via Zod schema in `env.js`
+  - Embedded in app bundle - accessible at runtime
+  - Passed to app via `app.config.ts` → `extra` field → `@/env`
+  - Examples: API URLs, locale, MMKV key, Sentry DSN
+- **Build-time variables** (no prefix):
+  - Only available in `app.config.ts` and build scripts
+  - Not embedded in app bundle
+  - Examples: Sentry auth token, EAS project ID
+- **ESLint enforcement**:
+  - ✅ Allows: `import { env } from '@/env'`
+  - ❌ Blocks: `process.env.*` in `src/`
+  - ❌ Blocks: Relative imports to root `env.js`
+  - ✅ Exception: `Platform.OS` for platform detection
 
 ## Learn more
 

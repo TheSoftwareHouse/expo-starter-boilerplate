@@ -18,7 +18,6 @@ export default defineConfig([
       'react/display-name': 'off',
       'react/react-in-jsx-scope': 'off',
 
-      'import/no-default-export': 'error',
       'import/order': [
         'error',
         {
@@ -34,24 +33,34 @@ export default defineConfig([
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-
-      // Disallow direct process.env access in src directory
-      'no-restricted-syntax': [
-        'error',
-        {
-          selector:
-            'MemberExpression[object.name="process"][property.name="env"]:not([parent.property.name="EXPO_OS"])',
-          message:
-            'Direct access to process.env is not allowed. Import environment variables from @/env instead. Exception: process.env.EXPO_OS is allowed as it is a compile-time constant.',
-        },
-      ],
     },
   },
-  // Allow process.env in config files, test files, and integrations that use expo config
   {
-    files: ['src/env.ts', 'scripts/**/*.js', 'scripts/**/*.ts'],
+    files: ['src/**/*.ts', 'src/**/*.tsx'],
     rules: {
-      'no-restricted-syntax': 'off',
+      'import/no-default-export': 'error',
+      // Disallow process.env access in src directory
+      'no-restricted-properties': [
+        'error',
+        {
+          object: 'process',
+          property: 'env',
+          message:
+            'Direct access to process.env is not allowed in src/. Import environment variables from @/env instead.',
+        },
+      ],
+      // Disallow importing root env.js from src folder (must use @/env instead)
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['env', 'env.js', '../**/env', '../**/env.js', '!@/env'],
+              message: 'Do not import root env.js from src/. Use @/env instead.',
+            },
+          ],
+        },
+      ],
     },
   },
   // Allow default exports for Expo Router files
