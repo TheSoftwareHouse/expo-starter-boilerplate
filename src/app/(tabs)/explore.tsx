@@ -147,7 +147,7 @@ export default function TabTwoScreen() {
           <Typography weight="bold">@3x</Typography> suffixes to provide files for different screen densities
         </Typography>
         <Image
-          source={require('@/assets/images/react-logo.png')}
+          source={require('assets/images/react-logo.png')}
           style={{ width: 100, height: 100, alignSelf: 'center' }}
         />
         <ExternalLink href="https://reactnative.dev/docs/images">

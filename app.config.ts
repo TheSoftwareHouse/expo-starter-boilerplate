@@ -16,7 +16,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: Env.SLUG,
   version: Env.VERSION,
   orientation: 'portrait',
-  icon: './src/assets/images/icon.png',
+  icon: './assets/images/icon.png',
   scheme: Env.SCHEME,
   userInterfaceStyle: 'automatic',
   owner: Env.EXPO_ACCOUNT_OWNER,
@@ -27,9 +27,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     adaptiveIcon: {
       backgroundColor: '#E6F4FE',
-      foregroundImage: './src/assets/images/android-icon-foreground.png',
-      backgroundImage: './src/assets/images/android-icon-background.png',
-      monochromeImage: './src/assets/images/android-icon-monochrome.png',
+      foregroundImage: './assets/images/android-icon-foreground.png',
+      backgroundImage: './assets/images/android-icon-background.png',
+      monochromeImage: './assets/images/android-icon-monochrome.png',
     },
     edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
@@ -37,14 +37,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   web: {
     output: 'static',
-    favicon: './src/assets/images/favicon.png',
+    favicon: './assets/images/favicon.png',
   },
   plugins: [
     'expo-router',
     [
       'expo-splash-screen',
       {
-        image: './src/assets/images/splash-icon.png',
+        image: './assets/images/splash-icon.png',
         imageWidth: 200,
         resizeMode: 'contain',
         backgroundColor: '#ffffff',

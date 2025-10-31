@@ -34,7 +34,7 @@ export default function LoginScreen() {
       </View>
 
       <Box style={styles.content}>
-        <Image source={require('@/assets/images/react-logo.png')} style={styles.logo} />
+        <Image source={require('assets/images/react-logo.png')} style={styles.logo} />
 
         <Typography variant="h1" style={styles.title}>
           {t('home.helloWorld')}
